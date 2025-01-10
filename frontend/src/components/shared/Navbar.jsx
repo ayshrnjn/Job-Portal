@@ -66,7 +66,7 @@ function Navbar() {
                 <Avatar className="w-10 h-10 rounded-full cursor-pointer">
                   {/* Set image size and rounded style */}
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.profile?.profilePhoto}
                     alt="User Avatar"
                     className="rounded-full"
                   />
@@ -76,14 +76,14 @@ function Navbar() {
                 <div className="flex items-center gap-2">
                   <Avatar className="w-10 h-10 rounded-full cursor-pointer">
                     <AvatarImage
-                      src="https://github.com/shadcn.png"
+                      src={user?.profile?.profilePhoto}
                       alt="User Avatar"
                       className="rounded-full"
                     />
                   </Avatar>
                   <div>
-                    <h4 className="font-medium">Ayush Ranjan</h4>
-                    <p className="text-sm text-muted-foreground">Lorem ipsum dolor sit amet.</p>
+                    <h4 className="font-medium">{user?.fullname}</h4>
+                    <p className="text-sm text-muted-foreground">{user?.profile?.bio}</p>
                   </div>
                 </div>
                 <div className="flex flex-col text-gray-600">
