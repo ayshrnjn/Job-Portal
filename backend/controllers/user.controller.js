@@ -3,6 +3,8 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
  
 
 export const register= async(req,res)=>{
@@ -125,10 +127,13 @@ export const login =async (req,res) =>{
             const file=req.file;
 
            
-
+         
 
 
             // cloudinary aayega idhar
+
+            const fileUri=getDataUri(file);
+            const cloudResponse=await cloudinary.uploader.upload(fileUri.content);
         
             let skillsArray;
         if(skills){
@@ -151,6 +156,11 @@ export const login =async (req,res) =>{
         if(skills) user.profile.skills = skillsArray
    
         // resume come later
+
+        if(cloudResponse){
+            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
+            user.profile.resumeOriginalName = file.originalname // Save the original file name
+        }
 
         await user.save();
 
