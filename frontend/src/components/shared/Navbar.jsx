@@ -4,12 +4,40 @@ import { Avatar } from '@radix-ui/react-avatar';
 import { AvatarImage } from '../ui/avatar';
 import { LogOut, User2 } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { USER_API_END_POINT } from '@/utils/constant';
+import { toast } from 'sonner';
+import axios from 'axios';
+import { setUser } from '@/redux/authSlice';
 
 function Navbar() {
+
+
+   
   
   const {user}=useSelector(store=>store.auth);
+  const dispatch=useDispatch();
+  const navigate =useNavigate();
+
+  const logoutHandler= async()=>{
+    try{
+     
+      const res= await axios.get(`${USER_API_END_POINT}/logout`,{withCredentials:true});
+
+      if(res.data.success){
+        dispatch(setUser(null));
+        navigate("/");
+        toast.success(res.data.message)
+
+      }
+    }
+    catch(error){
+      console.log(error);
+      toast.error(error.response.data.message);
+      
+    }
+  }
 
   return (
     <div className="bg-white">
@@ -65,7 +93,7 @@ function Navbar() {
                   </div>
                   <div className="flex w-fit items-center gap-2 cursor-pointer">
                     <LogOut />
-                    <Button variant="link">Log Out</Button>
+                    <Button  onClick ={logoutHandler}variant="link">Log Out</Button>
                   </div>
                 </div>
               </PopoverContent>
