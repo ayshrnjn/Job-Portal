@@ -7,22 +7,19 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const CompaniesTable = () => {
+    const { companies, searchCompanyByText } = useSelector(store => store.company);
+    const [filterCompany, setFilterCompany] = useState(companies);
+    const navigate = useNavigate();
+    useEffect(()=>{
+        const filteredCompany = companies.length >= 0 && companies.filter((company)=>{
+            if(!searchCompanyByText){
+                return true
+            };
+            return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());
 
-     
-    // const { companies, searchCompanyByText } = useSelector(store => store.company);
-    // const [filterCompany, setFilterCompany] = useState(companies);
-    // const navigate = useNavigate();
-    // useEffect(()=>{
-    //     const filteredCompany = companies.length >= 0 && companies.filter((company)=>{
-    //         if(!searchCompanyByText){
-    //             return true
-    //         };
-    //         return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());
-
-    //     });
-    //     setFilterCompany(filteredCompany); 
-    // },[companies,searchCompanyByText])   
-
+        });
+        setFilterCompany(filteredCompany);
+    },[companies,searchCompanyByText])
     return (
         <div>
             <Table>
@@ -37,15 +34,15 @@ const CompaniesTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        
+                        filterCompany?.map((company) => (
                             <tr>
                                 <TableCell>
                                     <Avatar>
-                                        <AvatarImage src="" alt="hello"/>
+                                        <AvatarImage src={company.logo}/>
                                     </Avatar>
                                 </TableCell>
-                                <TableCell>Company Name</TableCell>
-                                <TableCell>12-01-24</TableCell>
+                                <TableCell>{company.name}</TableCell>
+                                <TableCell>{company.createdAt.split("T")[0]}</TableCell>
                                 <TableCell className="text-right cursor-pointer">
                                     <Popover>
                                         <PopoverTrigger><MoreHorizontal /></PopoverTrigger>
@@ -59,7 +56,7 @@ const CompaniesTable = () => {
                                 </TableCell>
                             </tr>
 
-                        
+                        ))
                     }
                 </TableBody>
             </Table>
