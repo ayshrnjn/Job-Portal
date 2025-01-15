@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../shared/Navbar';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -18,7 +18,7 @@ function Login() {
     password: '',
     role: '',
   });
-  const { loading } = useSelector(store => store.auth);
+  const { loading,user } = useSelector(store => store.auth);
   const navigate = useNavigate(); // Move this here, outside the submitHandler
   const dispatch = useDispatch();
 
@@ -50,6 +50,11 @@ function Login() {
       dispatch(setLoading(false));
     }
   };
+  useEffect(()=>{
+    if(user){
+        navigate("/");
+    }
+},[])
 
   return (
     <div>
