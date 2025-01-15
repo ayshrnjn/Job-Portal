@@ -37,6 +37,9 @@ export const postJob = async (req, res) => {
 export const getAllJobs = async (req, res) => {
     try {
         const keyword = req.query.keyword || "";
+        console.log('====================================');
+        console.log("njn ",keyword);
+        console.log('====================================');
         const query = {
             $or: [
                 { title: { $regex: keyword, $options: "i" } },
