@@ -50,6 +50,8 @@ function Login() {
       dispatch(setLoading(false));
     }
   };
+  // to handle the scenario where user will be logged in and suppose you will duplicate the same tab then
+  // it will load the same logged in page, not need to login again
   useEffect(()=>{
     if(user){
         navigate("/");
@@ -70,7 +72,7 @@ function Login() {
               value={input.email}
               name='email'
               onChange={changeEventHandler}
-              placeholder='ayush@gmail.com'
+              placeholder='user@gmail.com'
             />
           </div>
 

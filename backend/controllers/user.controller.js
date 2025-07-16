@@ -1,5 +1,3 @@
-
-
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -19,13 +17,13 @@ export const register= async(req,res)=>{
             });
         };
         const file=req.file
-        const fileUri=getDataUri(file);
+        const fileUri= getDataUri(file);
         const cloudResponse= await cloudinary.uploader.upload(fileUri.content);
 
         const user =await User.findOne({email});
         if(user){
             return res.status(400).json({
-                messgae:'user already exist with this email',
+                message:'user already exist with this email',
                 success:false,
             })
         };
@@ -62,7 +60,7 @@ export const login =async (req,res) =>{
             })
         };
         let user= await User.findOne({email});
-        if(!User){
+        if(!user){
             return res.status(400).json({
                 message:"incorrect email or password",
                 success: false,
@@ -106,7 +104,7 @@ export const login =async (req,res) =>{
 
 
         return res.status(200).cookie("token", token,{maxAge:1*24*60*60*1000,httpsOnly:true,sameSite:'strict'}).json({
-          message:`welcome back ${user.fullName}`,
+          message:`welcome back ${user.fullname}`,
           user,
           success:true
         })
@@ -131,10 +129,6 @@ export const login =async (req,res) =>{
         try {
             const { fullname, email, phoneNumber, bio, skills } = req.body;
             const file=req.file;
-
-           
-         
-
 
             // cloudinary aayega idhar
 

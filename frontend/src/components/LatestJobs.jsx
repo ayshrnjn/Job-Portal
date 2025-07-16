@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
-const randomJobs = [1, 2, 3, 4, 5, 6, 7, 8];
+const randomJobs = [1, 2, 3, 4, 5, 6, 7, 8,10,11,12];
 const LatestJobs=() =>{
   const {allJobs}=useSelector(store=>store.job);
    const navigate=useNavigate();

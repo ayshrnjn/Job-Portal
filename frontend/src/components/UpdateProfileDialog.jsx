@@ -12,23 +12,6 @@ import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const UpdateProfileDialog = ({ open, setOpen }) => {
 
     const [loading,setLoading] = useState(false);
@@ -72,8 +55,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             });
 
             if(res.data.success){
-dispatch(setUser(res.data.user));
-toast.success(res.data.message)
+                dispatch(setUser(res.data.user));
+                toast.success(res.data.message)
 
             }
         }catch(error){

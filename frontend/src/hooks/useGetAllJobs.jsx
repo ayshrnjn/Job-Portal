@@ -11,9 +11,7 @@ const useGetAllJobs=()=> {
    useEffect(()=>{
     const fetchAllJobs= async ()=>{
         try{
-          console.log("iji",searchQuery);
          const res= await axios.get(`${JOB_API_END_POINT}/get?keyword=${searchQuery}`,{withCredentials:true});
-         console.log("jhjh ",res);
          if(res.data.success){
           dispatch(setAllJobs(res.data.jobs));
          }

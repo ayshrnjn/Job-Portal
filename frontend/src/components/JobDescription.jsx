@@ -13,71 +13,59 @@ import { toast } from 'sonner';
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 const JobDescription = () => {
 
 
-  const{singleJob}=useSelector(store=>store.job);
-  
-  const params=useParams();
-  const jobId=params.id;
-  
-  const dispatch=useDispatch();
-  const {user}= useSelector(store=>store.auth);
-  const  isIntiallyApplied=singleJob?.applications?.some(application=>application.applicant===user?._id) || false ;
-    const[isApplied,setIsApplied]=useState(isIntiallyApplied);
+  const { singleJob } = useSelector(store => store.job);
+
+  const params = useParams();
+  const jobId = params.id;
+
+  const dispatch = useDispatch();
+  const { user } = useSelector(store => store.auth);
+  const isIntiallyApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+  const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
   const applyJobHandler = async () => {
     try {
-        const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {withCredentials:true});
-        
-        if(res.data.success){
-             setIsApplied(true); // Update the local state
-             const updatedSingleJob = {...singleJob, applications:[...singleJob.applications,{applicant:user?._id}]} //
-             //only application number changes that why we use here updatesinglejob
-             dispatch(setSingleJob(updatedSingleJob)); // helps us to real time UI update
-            toast.success(res.data.message);
+      const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, { withCredentials: true });
 
-        }
+      if (res.data.success) {
+        setIsApplied(true); // Update the local state
+        const updatedSingleJob = { ...singleJob, applications: [...singleJob.applications, { applicant: user?._id }] } //
+        //only application number changes that why we use here updatesinglejob
+        dispatch(setSingleJob(updatedSingleJob)); // helps us to real time UI update
+        toast.success(res.data.message);
+
+      }
     } catch (error) {
-        console.log(error);
-        toast.error(error.response.data.message);
+      console.log(error);
+      toast.error(error.response.data.message);
     }
-}
+  }
 
 
-  useEffect(()=>{
-    const fetchSingleJob= async ()=>{
-        try{
-         const res= await axios.get(`${JOB_API_END_POINT}/get/${jobId}`,{withCredentials:true});
-         if(res.data.success){
-          dispatch(setSingleJob(res.data.job));
-          setIsApplied(res.data.job.applications.some(application=>application.applicant ===user?._id)) //ensure the state is in sync with fetched data
-         }
-        }
-        catch(error){
-         console.log(error);
-         
-        }
+  useEffect(() => {
+    const fetchSingleJob = async () => {
+      try {
+        const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true }); // fetch single job from db based
+        if (res.data.success) {                                                       //on job id 
+          dispatch(setSingleJob(res.data.job)); 
+          console.log("hey", JSON.stringify(res.data.job));
+          setIsApplied(res.data.job.applications.some(application => application.applicant === user?._id)) //ensure the state is in sync with fetched data
+        }                                        // atleast one element is matching then rerurn trur
+      }
+      catch (error) {
+        console.log(error);
+
+      }
     }
     fetchSingleJob();
-   },[jobId,dispatch,user?._id]);
+  }, [jobId, dispatch, user?._id]);
   return (
 
 
-      
+
 
     <div className='max-w-7xl mx-auto my-10'>
       <div className='flex items-center justify-between'>
@@ -90,7 +78,7 @@ const JobDescription = () => {
           </div>
         </div>
         <Button
-          onClick ={isApplied ? null :applyJobHandler}
+          onClick={isApplied ? null : applyJobHandler}
           disabled={isApplied}
           className={`rounded-lg ${isApplied ? 'bg-gray-600 cursor-not-allowed' : 'bg-[#7209b7] hover:bg-[#5f32ad]'}`}>
           {isApplied ? 'Already Applied' : 'Apply Now'}
