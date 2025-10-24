@@ -19,7 +19,7 @@ const useGetAllJobs=()=> {
         catch(error){
          console.log(error);
          
-        }
+        }z
     }
     fetchAllJobs();
    },[])

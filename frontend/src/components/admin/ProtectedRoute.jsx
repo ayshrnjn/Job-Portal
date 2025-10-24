@@ -12,6 +12,7 @@ const ProtectedRoute = ({children}) => {
             navigate("/");
         }
     },[]);
+    
 
     return (
         <>
